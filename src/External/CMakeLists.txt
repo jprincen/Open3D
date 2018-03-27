@@ -38,32 +38,34 @@ if (Open3D_USE_NATIVE_DEPENDENCY_BUILD)
 			add_subdirectory(libpng)
 		endif (PNG_FOUND)
 
-		pkg_search_module(GLFW glfw3)
-		find_package(OpenGL)
-		if (GLFW_FOUND AND OPENGL_FOUND)
-			message(STATUS "Use native build of glfw")
-			if (APPLE)
-				find_library(COCOA_FRAMEWORK Cocoa)
-			    find_library(IOKIT_FRAMEWORK IOKit)
-			    find_library(CORE_FOUNDATION_FRAMEWORK CoreFoundation)
-			    find_library(CORE_VIDEO_FRAMEWORK CoreVideo)
-			    mark_as_advanced(COCOA_FRAMEWORK
-			                     IOKIT_FRAMEWORK
-			                     CORE_FOUNDATION_FRAMEWORK
-			                     CORE_VIDEO_FRAMEWORK)
-			    list(APPEND GLFW_LIBRARIES "${COCOA_FRAMEWORK}"
-			                               "${OPENGL_gl_LIBRARY}"
-			                               "${IOKIT_FRAMEWORK}"
-			                               "${CORE_FOUNDATION_FRAMEWORK}"
-			                               "${CORE_VIDEO_FRAMEWORK}")
-			else (APPLE)
-				set(GLFW_INCLUDE_DIRS "${GLFW_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR}")
-				set(GLFW_LIBRARIES "${GLFW_LIBRARIES} ${OPENGL_gl_LIBRARY}")
-			endif (APPLE)
-		else (GLFW_FOUND AND OPENGL_FOUND)
-			message(STATUS "Build glfw from source")
-			add_subdirectory(GLFW)
-		endif (GLFW_FOUND AND OPENGL_FOUND)
+    if (Open3D_USE_VISUALIZATION)
+			pkg_search_module(GLFW glfw3)
+			find_package(OpenGL)
+			if (GLFW_FOUND AND OPENGL_FOUND)
+				message(STATUS "Use native build of glfw")
+				if (APPLE)
+					find_library(COCOA_FRAMEWORK Cocoa)
+				    find_library(IOKIT_FRAMEWORK IOKit)
+				    find_library(CORE_FOUNDATION_FRAMEWORK CoreFoundation)
+				    find_library(CORE_VIDEO_FRAMEWORK CoreVideo)
+				    mark_as_advanced(COCOA_FRAMEWORK
+				                     IOKIT_FRAMEWORK
+				                     CORE_FOUNDATION_FRAMEWORK
+				                     CORE_VIDEO_FRAMEWORK)
+				    list(APPEND GLFW_LIBRARIES "${COCOA_FRAMEWORK}"
+				                               "${OPENGL_gl_LIBRARY}"
+				                               "${IOKIT_FRAMEWORK}"
+				                               "${CORE_FOUNDATION_FRAMEWORK}"
+				                               "${CORE_VIDEO_FRAMEWORK}")
+				else (APPLE)
+					set(GLFW_INCLUDE_DIRS "${GLFW_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR}")
+					set(GLFW_LIBRARIES "${GLFW_LIBRARIES} ${OPENGL_gl_LIBRARY}")
+				endif (APPLE)
+			else (GLFW_FOUND AND OPENGL_FOUND)
+				message(STATUS "Build glfw from source")
+				add_subdirectory(GLFW)
+			endif (GLFW_FOUND AND OPENGL_FOUND)
+    endif(Open3D_USE_VISUALIZATION)
 
 		if ((APPLE) AND ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU"))
 			# It is a known bug that g++ on OSX only supports libstdc++

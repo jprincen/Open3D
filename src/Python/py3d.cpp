@@ -33,9 +33,10 @@ PYBIND11_MODULE(py3d, m) {
 
 	pybind_core_classes(m);
 	pybind_io_classes(m);
-	pybind_visualization_classes(m);
-
 	pybind_core_methods(m);
 	pybind_io_methods(m);
+#ifndef OPEN3D_NO_VISUALIZATION
+	pybind_visualization_classes(m);
 	pybind_visualization_methods(m);
+#endif
 }
