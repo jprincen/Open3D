@@ -10,8 +10,7 @@ This tutorial introduces user interaction features of visualizer window.
     # src/Python/Tutorial/Advanced/interactive_visualization.py
 
     import numpy as np
-    import sys, copy
-    sys.path.append("../..")
+    import copy
     from py3d import *
 
     def demo_crop_geometry():
@@ -210,7 +209,7 @@ Registration using user correspondences
 
     def demo_manual_registration():
         :
-		assert(len(picked_id_source)>=3 and len(picked_id_target)>=3)
+        assert(len(picked_id_source)>=3 and len(picked_id_target)>=3)
         assert(len(picked_id_source) == len(picked_id_target))
         corr = np.zeros((len(picked_id_source),2))
         corr[:,0] = picked_id_source
