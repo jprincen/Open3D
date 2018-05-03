@@ -19,13 +19,18 @@ if (Open3D_USE_VISUALIZATION)
   	${PY_IO_SOURCE_FILES} ${PY_IO_HEADER_FILES}
   	${PY_VISUALIZATION_SOURCE_FILES} ${PY_VISUALIZATION_HEADER_FILES}
   )
-  target_link_libraries(py3d PRIVATE Core IO Visualization)
 else()
   pybind11_add_module(py3d
   	${PY_ALL_HEADER_FILES} ${PY_ALL_SOURCE_FILES}
   	${PY_CORE_SOURCE_FILES} ${PY_CORE_HEADER_FILES}
   	${PY_IO_SOURCE_FILES} ${PY_IO_HEADER_FILES}
   )
+  set_target_properties(py3d PROPERTIES OUTPUT_NAME py3d PREFIX "" SUFFIX ".so")
+endif(Open3D_USE_VISUALIZATION)
+
+if (Open3D_USE_VISUALIZATION)
+  target_link_libraries(py3d PRIVATE Core IO Visualization)
+else()
   target_link_libraries(py3d PRIVATE Core IO)
 endif(Open3D_USE_VISUALIZATION)
 
